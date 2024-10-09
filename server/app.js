@@ -45,10 +45,12 @@ app.get("/docs", (req, res) => {
   res.sendFile(__dirname + "/views/docs.html");
 });
 
+// COHORTS ROUTES
+
 app.get("/api/cohorts", (req, res)=>{
   Cohort.find({})
   .then((cohorts) => {
-    console.log("Retrieved books ->", cohorts);
+    console.log("Retrieved cohorts ->", cohorts);
     res.json(cohorts);
   })
   .catch((error) => {
@@ -57,8 +59,46 @@ app.get("/api/cohorts", (req, res)=>{
   });
 })
 
+app.post("/api/cohorts", async (req, res)=>{
+  try {
+    await Cohort.create(req.body);
+    res.send("OK. Cohort creado")
+  } catch (error) {
+    console.log(error);
+  }
+})
+
+app.get("/api/cohorts/:cohortId", async (req, res)=>{
+  try {
+    const response = await Cohort.findById(req.params.cohortId);
+    res.json(response);
+  } catch (error) {
+    console.log()
+  }
+})
+
+app.put("/api/cohorts/:cohortId", async (req, res)=>{
+  try {
+    const response = await Cohort.findByIdAndUpdate(req.params.cohortId, req.body, {new:true});
+    res.json(response);
+  } catch (error) {
+    console.log(error)
+  }
+})
+
+app.delete("/api/cohorts/:cohortId", async (req, res)=>{
+  try {
+    await Cohort.findByIdAndDelete(req.params.cohortId);
+    res.send("OK. Cohort eliminado");
+  } catch (error) {
+    console.log(error)
+  }
+})
+
+// STUDENTS ROUTES
+
 app.get("/api/students", (req, res)=>{
-  Student.find({firstName: /^Ir/})
+  Student.find()
   .then((students) => {
     console.log("Retrieved students ->", students);
     res.json(students);
@@ -68,6 +108,56 @@ app.get("/api/students", (req, res)=>{
     res.status(500).json({ error: "Failed to retrieve students" });
   });
 })
+
+app.post("/api/students", async (req, res)=>{
+  try {
+    await Student.create(req.body);
+    res.send("OK. Estudiante creado")
+  } catch (error) {
+    console.log(error);
+  }
+})
+
+app.get("/api/students/cohort/:cohortId", async (req, res)=>{
+  try {
+    // var newId = new mongoose.mongo.ObjectId(req.params.cohortId);
+    const response = await Student
+    .find({cohort: req.params.cohortId})
+    .populate("cohort");
+    res.json(response);
+  } catch (error) {
+    console.log(error)
+  }
+})
+
+app.get("/api/students/:studentId", async (req, res)=>{
+  try {
+    const response = await Student.findById(req.params.studentId);
+    res.json(response);
+  } catch (error) {
+    console.log()
+  }
+})
+
+app.put("/api/students/:studentId", async (req, res)=>{
+  try {
+    const response = await Student.findByIdAndUpdate(req.params.studentId, req.body, {new:true});
+    res.json(response);
+  } catch (error) {
+    console.log(error)
+  }
+})
+
+app.delete("/api/students/:studentId", async (req, res)=>{
+  try {
+    await Student.findByIdAndDelete(req.params.studentId);
+    res.send("OK. Estudiante eliminado");
+  } catch (error) {
+    console.log(error)
+  }
+})
+
+
 
 
 // START SERVER
