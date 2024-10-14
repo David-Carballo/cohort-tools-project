@@ -8,9 +8,6 @@ router.use("/cohorts", cohortRouter);
 const studentRouter = require("./student.route")
 router.use("/students", studentRouter);
 
-const authRouter = require("./auth.routes")
-router.use("/auth", authRouter);
-
 const userRouter = require("./user.routes")
 router.use("/users", userRouter)
 

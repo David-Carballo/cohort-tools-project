@@ -22,6 +22,9 @@ app.get("/docs", (req, res) => {
 const indexRouter = require("./routes/index.route")
 app.use("/api", indexRouter)
 
+const authRouter = require("./routes/auth.routes")
+app.use("/auth", authRouter);
+
 //errores
 const errorHandling = require("./error-handlers");
 errorHandling(app);

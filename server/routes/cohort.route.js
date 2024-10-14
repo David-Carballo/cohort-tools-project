@@ -16,8 +16,8 @@ router.get("/", (req, res, next)=>{
   
 router.post("/", async (req, res, next)=>{
     try {
-      await Cohort.create(req.body);
-      res.status(201).send("OK. Cohort creado")
+      const response = await Cohort.create(req.body);
+      res.status(201).json(response);
     } catch (error) {
       next(error);
     }

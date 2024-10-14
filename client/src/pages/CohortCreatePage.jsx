@@ -50,7 +50,6 @@ function CohortCreatePage() {
       .post(`${API_URL}/api/cohorts`, requestBody)
       .then((response) => {
         const newCohort = response.data;
-
         navigate(`/cohorts/details/${newCohort._id}`);
       })
       .catch((error) => console.log(error));
